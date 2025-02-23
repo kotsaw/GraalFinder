@@ -2,38 +2,33 @@ import difflib
 
 def verify_lines(text, target_list):
     lines = text.strip().split('\n')
+   
     
-    # Extraire les coordonnées de départ de la première ligne
-    dechet ,POSdepart = lines[0].strip().split('[')
-    posX, posY = POSdepart.strip('[]').split(',')
-    print(f"Coordonnées de départ : {POSdepart}, posX : {posX}, posY : {posY}")
-    
-    
+    bPos = False
+    POSdepart =''
     # Ignorer la deuxième et la dernière ligne
     lines_to_check = lines[2:-1]
 
     # Vérifier l'existence des lignes X dans la liste donnée
     matched_lines = []
     for line in lines_to_check:
+        # Extraire les coordonnées de départ de la première ligne
+        if ('[' in line) and (bPos==False) :
+            dechet ,POSdepart = line.strip().split('[')
+            posX, posY = POSdepart.strip('[]').split(',')
+            
+            print(f"Coordonnées de départ : {POSdepart}, posX : {posX}, posY : {posY}")
+            bPos=True
         # Utiliser difflib pour la correspondance souple
         for target in target_list:
             ratio = difflib.SequenceMatcher(None, line, target).ratio()
-            if ratio > 0.8:  # Ajustez le seuil de similarité selon vos besoins
+            if ratio > 0.5:  # Ajustez le seuil de similarité selon vos besoins
                 matched_lines.append((line, target, ratio))
                 break
 
-    return matched_lines
+    return matched_lines,posX,posY
 
-# Exemple de chaîne et liste cible
-example_text = """ETAPE : 1/4 Départ [-48,19]
-ile d'Otomai (Plaines herbeuses)
-@ Étoile verte en papier
-2
-2
 
-4 essais restants
-
-encoursVALIDER"""
 
 target_list = [
     'Étoile verte en papier',
@@ -223,9 +218,3 @@ target_list = [
     'Affiche de carte au trésor'
 ]
 
-# Appel de la fonction
-matched_lines = verify_lines(example_text, target_list)
-
-print("Lignes correspondantes trouvées :")
-for line, target, ratio in matched_lines:
-    print(f"'{line}' correspond à '{target}' avec un ratio de similarité de {ratio:.2f}")

@@ -10,6 +10,7 @@ import difflib
 import cv2
 import numpy as np
 import threading
+from Graal_parser import verify_lines, target_list  # Importer la fonction et la liste cible
 
 pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 
@@ -88,8 +89,20 @@ def capture_loop():
             if lowest_arrow:
                 print("Flèche trouvée la plus en bas :", lowest_arrow)
                 label5.config(text=f"{current_text}\nFlèche: {lowest_arrow}")  # Enregistrer le lowest_arrow à la suite de current_text dans label5
-        else:
-            print("Le texte de la capture d'écran est similaire.")
+            
+            # Utiliser verify_lines pour récupérer le dernier indice reconnu
+            matched_lines = verify_lines(current_text, target_list)
+            if matched_lines:
+                last_match = matched_lines[-1]
+                print(f"Dernier indice reconnu : {last_match[1]}")
+                label5.config(text=f"{current_text}\nDernier indice : {last_match[1]}")
+        
+        # Afficher le screenshot dans le champ image
+        img = Image.open(screenshot_filename)
+        img = img.resize((550, 310), Image.LANCZOS)
+        img_tk = ImageTk.PhotoImage(img)
+        image_label.config(image=img_tk)
+        image_label.image = img_tk
         
         time.sleep(5)
 
@@ -182,22 +195,10 @@ label3.place(x=245, y=390, width=100, height=40)
 label4 = tk.Label(root, text="Label4", bg='white')
 label4.place(x=355, y=390, width=100, height=40)
 
-for i in range(2, 4):
-    button = tk.Button(root, text=f"Action{i+1}", command=actions[i], bg='white')
-    button.place(x=25 + i*110, y=430, width=100, height=40)
-
-# Ajouter les boutons Action1 et Action2
-button1 = tk.Button(root, text="Action1", command=run_action1, bg='white')
-button1.place(x=25, y=430, width=100, height=40)
-
-button2 = tk.Button(root, text="Action2", command=run_action2, bg='white')
-button2.place(x=135, y=430, width=100, height=40)
-
-# Champ libellé supplémentaire et bouton
-label5 = tk.Label(root, text="Label5", bg='white')
-label5.place(x=25, y=490, width=550, height=40)
-
-button5 = tk.Button(root, text="Action5", command=run_action5, bg='white')
-button5.place(x=475, y=410, width=100, height=40)  # Ajustement de la position
+# Forcer les valeurs initiales
+label1.config(text=f"X: {2193}")
+label2.config(text=f"Y: {396}")
+label3.config(text=f"X: {2554}")
+label4.config(text=f"Y: {803}")
 
 root.mainloop()
