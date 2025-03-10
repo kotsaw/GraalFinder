@@ -22,7 +22,10 @@ def verify_lines(text, target_list):
         # Utiliser difflib pour la correspondance souple
         for target in target_list:
             ratio = difflib.SequenceMatcher(None, line, target).ratio()
-            if ratio > 0.5:  # Ajustez le seuil de similarité selon vos besoins
+            
+            if ratio > 0.6:  # Ajustez le seuil de similarité selon vos besoins
+                
+                print("target = "+target)
                 matched_lines.append((line, target, ratio))
                 break
 
@@ -46,20 +49,20 @@ target_list = [
     'Torii cassé',
     'Tombe inondée de sang',
     'Tombe inondée',
-    'Tombe gravée d''un bouclier',
+    "Tombe gravée d'un bouclier",
     'Tissu à carreaux noué',
     'Théière à rayures',
     'Tambour à rayures',
     'Tambour papatte',
     'Talisman en papier',
-    'Sève qui s''écoule',
+    "Sève qui s'écoule",
     'Symbole de quête peint',
-    'Sucre d''orge',
+    "Sucre d'orge",
     'Stèle chacha',
     'Statue wabbit',
     'Statue sidoa',
     'Statue koalak',
-    'Squelette d''Ouginak pendu',
+    "Squelette d'Ouginak pendu",
     'Soupe de bananagrumes',
     'Slip à petit coeur',
     'Serrure dorée',
@@ -75,7 +78,7 @@ target_list = [
     'Rocher dé',
     'Rocher crâne',
     'Rocher Dofus',
-    'Queue d''Osamodas',
+    "Queue d'Osamodas",
     'Poupée koalak',
     'Poisson grillé embroché',
     'Pioche plantée',
@@ -91,7 +94,7 @@ target_list = [
     'Palmier à feuilles carrées',
     'Palmier surchargé de noix de coco',
     'Palmier peint à rayures',
-    'Palmier peint d''un chacha',
+    "Palmier peint d'un chacha",
     'Paire de lunettes',
     'Os dans la lave',
     'Ornement flocon',
@@ -143,11 +146,11 @@ target_list = [
     'Gravure de Gelax',
     'Gravure de Firefoux',
     'Gravure de Dofus',
-    'Gravure d''étoile',
-    'Gravure d''oeil',
-    'Gravure d''arakne',
-    'Gravure d''aile',
-    'Gravure d''Epée',
+    "Gravure d'étoile",
+    "Gravure d'oeil",
+    "Gravure d'arakne",
+    "Gravure d'aile",
+    "Gravure d'Epée",
     'Grand coquillage cassé',
     'Girouette dragodinde',
     'Framboisier',
@@ -212,7 +215,7 @@ target_list = [
     'Arbre glacé',
     'Arbre ensanglanté',
     'Arbre arc-en-ciel',
-    'Anneau d''or',
+    "Anneau d'or",
     'Ancre dorée',
     'Aiguille à coudre',
     'Affiche de carte au trésor'

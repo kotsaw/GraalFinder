@@ -13,21 +13,21 @@ def execute_sql_query(lowest_arrow, last_match, PosDepartX, PosDepartY):
     cursor = conn.cursor()
 
     if lowest_arrow == 'up':
-        query = "SELECT * FROM graal JOIN Graal_indices ON  '|' || Graal.Indices || '|' LIKE '%|' || graal_indices.Cle || '|%' WHERE Graal_indices.nom = ? AND Graal.PosY > ? AND Graal.PosY <= ? AND posx = ? ORDER BY PosX ASC LIMIT 1"
-        params = (last_match, int(PosDepartY), int(PosDepartY) - 10, int(PosDepartX))
+        query = "SELECT * FROM graal JOIN Graal_indices ON  '|' || Graal.Indices || '|' LIKE '%|' || graal_indices.Cle || '|%' WHERE Graal_indices.nom = ? AND CAST(Graal.PosY as integer) > ? AND CAST(Graal.PosY as integer) <= ? AND posx = ? ORDER BY CAST(Graal.PosY as integer) ASC LIMIT 1"
+        params = (last_match, int(PosDepartY)- 10, int(PosDepartY) , int(PosDepartX))
     elif lowest_arrow == 'down':
-        query = "SELECT * FROM graal JOIN Graal_indices ON  '|' || Graal.Indices || '|' LIKE '%|' || graal_indices.Cle || '|%' WHERE Graal_indices.nom = ? AND Graal.PosY >= ? AND Graal.PosY < ? AND posx = ? ORDER BY PosX ASC LIMIT 1"
-        params = (last_match, int(PosDepartY) - 10, int(PosDepartY), int(PosDepartX))
+        query = "SELECT * FROM graal JOIN Graal_indices ON  '|' || Graal.Indices || '|' LIKE '%|' || graal_indices.Cle || '|%' WHERE Graal_indices.nom = ? AND CAST(Graal.PosY as integer) > ? AND CAST(Graal.PosY as integer) <= ? AND posx = ? ORDER BY CAST(Graal.PosY as integer) DESC LIMIT 1"
+        params = (last_match, int(PosDepartY) , int(PosDepartY) + 10, int(PosDepartX))
     elif lowest_arrow == 'left':
-        query = "SELECT * FROM graal JOIN Graal_indices ON  '|' || Graal.Indices || '|' LIKE '%|' || graal_indices.Cle || '|%' WHERE Graal_indices.nom = ? AND Graal.PosX > ? AND Graal.PosX <= ? AND posy = ? ORDER BY PosX ASC LIMIT 1"
+        query = "SELECT * FROM graal JOIN Graal_indices ON  '|' || Graal.Indices || '|' LIKE '%|' || graal_indices.Cle || '|%' WHERE Graal_indices.nom = ? AND CAST(Graal.PosX as integer) > ? AND CAST(Graal.PosX as integer) <= ? AND posy = ? ORDER BY CAST(Graal.PosX as integer) DESC LIMIT 1"
         params = (last_match, int(PosDepartX) - 10, int(PosDepartX), int(PosDepartY))
     elif lowest_arrow == 'right':
-        query = "SELECT * FROM graal JOIN Graal_indices ON  '|' || Graal.Indices || '|' LIKE '%|' || graal_indices.Cle || '|%' WHERE Graal_indices.nom = ? AND Graal.PosX >= ? AND Graal.PosX < ? AND posy = ? ORDER BY PosX ASC LIMIT 1"
+        query = "SELECT * FROM graal JOIN Graal_indices ON  '|' || Graal.Indices || '|' LIKE '%|' || graal_indices.Cle || '|%' WHERE Graal_indices.nom = ? AND CAST(Graal.PosX as integer) > ? AND CAST(Graal.PosX as integer) <= ? AND posy = ? ORDER BY CAST(Graal.PosX as integer) ASC LIMIT 1"
         params = (last_match, int(PosDepartX), int(PosDepartX) + 10, int(PosDepartY))
     else:
         print("Flèche non reconnue")
         return
-    
+    print("last_match"+last_match)
     formatted_query = format_query(query, params)
     print("Query exécutée : " + formatted_query)
     
